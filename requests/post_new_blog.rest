@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Cooking Sous Viv",
+  "author": "Vivian Cao",
+  "url": "http://www.cookingsousviv.com",
+  "likes": 10000000
+}

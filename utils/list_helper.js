@@ -48,7 +48,17 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blogs) => {
   if(blogs.length > 0) {
-    return
+    const authors = _.groupBy(blogs, 'author')
+    const reducedAuthors = _.map(authors, author =>
+      _.assign({}, _.head(author), { totalLikes: _.sumBy(author, 'likes') })
+    )
+    const mostLikedAuthor = _.maxBy(reducedAuthors, 'totalLikes')
+    return(
+      {
+        author: mostLikedAuthor.author,
+        likes: mostLikedAuthor.totalLikes
+      }
+    )
   } else {
     return 'No blogs'
   }

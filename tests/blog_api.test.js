@@ -30,6 +30,30 @@ test('unique identifier property of blog posts is named id', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
+test('a new blog can be added', async () => {
+  const newBlog = {
+    title: 'Cooking Sous Viv',
+    author: 'Vivian Cao',
+    url: 'http://www.cookingsousviv.com',
+    likes: 1000
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const authors = response.body.map(res => res.author)
+
+  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+  expect(authors).toContain(
+    'Vivian Cao'
+  )
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

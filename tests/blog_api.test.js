@@ -119,6 +119,25 @@ test('a blog can be deleted', async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 })
 
+test('a blog can be updated', async () => {
+  const id = helper.initialBlogs[0]._id
+
+  const updatedInfo = {
+    title: 'React Matters',
+    author: 'Michael Chan',
+    url: 'https://reactmatters.com/',
+    likes: 70000,
+  }
+
+  const response = await api.put(`/api/blogs/${id}`)
+    .send(updatedInfo)
+
+  const updatedBlog = response.body
+
+  expect(updatedBlog.likes).toBe(updatedInfo.likes)
+  expect(updatedBlog.title).toBe(updatedBlog.title)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

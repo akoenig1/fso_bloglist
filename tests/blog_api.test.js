@@ -73,6 +73,40 @@ test('a new blog with no likes property specified is created with likes initiali
   expect(response.body[helper.initialBlogs.length].likes).toBe(0)
 })
 
+test('a blog with no title property will not be saved to the database', async () => {
+  const newBlog = {
+    author: 'Vivian Cao',
+    url: 'http://www.cookingsousviv.com',
+    likes: 1000
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
+test('a blog with no url property will not be saved to the database', async () => {
+  const newBlog = {
+    title: 'Cooking Sous Viv',
+    author: 'Vivian Cao',
+    likes: 1000
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

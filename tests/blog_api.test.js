@@ -54,6 +54,25 @@ test('a new blog can be added', async () => {
   )
 })
 
+test('a new blog with no likes property specified is created with likes initialized to 0', async () => {
+  const newBlog = {
+    title: 'Cooking Sous Viv',
+    author: 'Vivian Cao',
+    url: 'http://www.cookingsousviv.com'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+  expect(response.body[helper.initialBlogs.length].likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

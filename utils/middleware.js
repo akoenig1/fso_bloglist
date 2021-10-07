@@ -1,4 +1,7 @@
 const logger = require('./logger')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const requestLogger = (req, res, next) => {
   logger.info('Method:', req.method)
@@ -33,9 +36,22 @@ const tokenExtractor = (req, res, next) => {
   next()
 }
 
+const userExtractor = async (req, res, next) => {
+  // eslint-disable-next-line no-undef
+  const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET)
+  if(!req.token || !decodedToken.id) {
+    return res.status(401).json({ error: 'Token missing or invalid' })
+  }
+
+  req.user = await User.findById(decodedToken.id)
+
+  next()
+}
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 }

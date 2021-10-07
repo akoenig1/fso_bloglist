@@ -1,23 +1,15 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
-const jwt = require('jsonwebtoken')
+const middleware = require('../utils/middleware')
 require('express-async-errors')
-require('dotenv').config()
 
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1, id: 1 })
   res.json(blogs)
 })
 
-blogsRouter.post('/', async (req, res) => {
-  // eslint-disable-next-line no-undef
-  const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET)
-  if(!req.token || !decodedToken.id) {
-    return res.status(401).json({ error: 'Token missing or invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
+blogsRouter.post('/', middleware.userExtractor, async (req, res) => {
+  const user = req.user
 
   const blog = new Blog({
     ...req.body,
@@ -31,15 +23,9 @@ blogsRouter.post('/', async (req, res) => {
   res.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (req, res) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
   const blog = await Blog.findById(req.params.id)
-  // eslint-disable-next-line no-undef
-  const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET)
-  if(!req.token || !decodedToken.id) {
-    return res.status(401).json({ error: 'Token missing or invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
+  const user = req.user
 
   if(blog.user.toString() !== user.id.toString()) {
     return res.status(403).json({ error: 'Blog may only be deleted by its creator' })

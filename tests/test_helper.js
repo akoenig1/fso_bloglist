@@ -1,5 +1,6 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+require('dotenv').config()
 
 const initialBlogs = [
   {
@@ -8,7 +9,7 @@ const initialBlogs = [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
-    user: '615e63c1cdb69ea9783b19b5',
+    user: '615e6ea58fc9ede73ef19719',
     __v: 0
   },
   {
@@ -63,7 +64,8 @@ const usersInDb = async () => {
   return users.map(user => user.toJSON())
 }
 
-const testUserToken = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYxNWU2M2MxY2RiNjllYTk3ODNiMTliNSIsImlhdCI6MTYzMzU3NzA3MX0.7IIQFJgHhrb0Wspru72q5AAuh3wnZKgV-TSzSgiKKfg'
+// eslint-disable-next-line no-undef
+const testUserToken = `bearer ${process.env.TEST_USER_TOKEN}`
 
 module.exports = {
   initialBlogs,

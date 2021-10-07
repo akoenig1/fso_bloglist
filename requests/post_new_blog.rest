@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImR1YmJ5YSIsImlkIjoiNjE1ZTQzYzliYjVhMzhkZDZhNTg3NTY1IiwiaWF0IjoxNjMzNTc0MDE3fQ.F7Z9RQpycXJxnr1H7p8I09Fo-Nbku2oVwm6BtfDcI1s
 
 {
-  "title": "Recipe Club",
-  "author": "Dave Chang",
-  "url": "http://www.recipeclub.com",
-  "likes": 1000000
+  "title": "Men in Blazers",
+  "author": "Roger Bennett",
+  "url": "http://www.meninblazers.com",
+  "likes": 12500000
 }

@@ -38,7 +38,7 @@ const tokenExtractor = (req, res, next) => {
 
 const userExtractor = async (req, res, next) => {
   // eslint-disable-next-line no-undef
-  const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET)
+  const decodedToken = req.token ? jwt.verify(req.token, process.env.JWT_SECRET) : null
   if(!req.token || !decodedToken.id) {
     return res.status(401).json({ error: 'Token missing or invalid' })
   }

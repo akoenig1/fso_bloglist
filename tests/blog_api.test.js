@@ -41,6 +41,7 @@ test('a new blog can be added', async () => {
   await api
     .post('/api/blogs')
     .send(newBlog)
+    .set('authorization', helper.testUserToken)
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
@@ -54,6 +55,24 @@ test('a new blog can be added', async () => {
   )
 })
 
+test('a new blog cannot be added without a token', async () => {
+  const newBlog = {
+    title: 'Cooking Sous Viv',
+    author: 'Vivian Cao',
+    url: 'http://www.cookingsousviv.com',
+    likes: 1000
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+
+  const response = await api.get('/api/blogs')
+
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
+})
+
 test('a new blog with no likes property specified is created with likes initialized to 0', async () => {
   const newBlog = {
     title: 'Cooking Sous Viv',
@@ -64,6 +83,7 @@ test('a new blog with no likes property specified is created with likes initiali
   await api
     .post('/api/blogs')
     .send(newBlog)
+    .set('authorization', helper.testUserToken)
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
@@ -83,6 +103,7 @@ test('a blog with no title property will not be saved to the database', async ()
   await api
     .post('/api/blogs')
     .send(newBlog)
+    .set('authorization', helper.testUserToken)
     .expect(400)
 
   const blogsAtEnd = await helper.blogsInDb()
@@ -100,6 +121,7 @@ test('a blog with no url property will not be saved to the database', async () =
   await api
     .post('/api/blogs')
     .send(newBlog)
+    .set('authorization', helper.testUserToken)
     .expect(400)
 
   const blogsAtEnd = await helper.blogsInDb()
@@ -112,6 +134,7 @@ test('a blog can be deleted', async () => {
 
   await api
     .delete(`/api/blogs/${id}`)
+    .set('authorization', helper.testUserToken)
     .expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()

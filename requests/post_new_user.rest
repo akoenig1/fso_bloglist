@@ -2,7 +2,7 @@ POST http://localhost:3001/api/users HTTP/1.1
 Content-Type: application/json
 
 {
-  "username": "bobama44",
-  "name": "Barack Obama",
-  "password": "barry0"
+  "username": "dubbya",
+  "name": "George W Bush",
+  "password": "iraq"
 }

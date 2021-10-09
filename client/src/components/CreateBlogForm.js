@@ -1,11 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import react, { useState } from 'react'
 
-const CreateBlogForm = ({ handleCreateBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
+const CreateBlogForm = ({ title, setTitle, author, setAuthor, url, setUrl, handleCreateBlog }) => {
 
   return(
     <form onSubmit={handleCreateBlog}>

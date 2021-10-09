@@ -9,6 +9,9 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
 
@@ -70,9 +73,20 @@ const App = () => {
     try {
       const newBlog = await blogService.createBlog(blogInfo)
       setBlogs(blogs.concat(newBlog))
-    } catch (exception) {
+      setTitle('')
+      setAuthor('')
+      setUrl('')
       setMessage({
-        text: 'Invalid blog info',
+        text: `Added ${newBlog.title} by ${newBlog.author}`,
+        type: 'success'
+      })
+      setTimeout(() => {
+        setMessage(null)
+      }, 4000)
+    } catch (exception) {
+      console.log(exception);
+      setMessage({
+        text: `${exception}`,
         type: 'error'
       })
       setTimeout(() => {
@@ -115,12 +129,21 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message}/>
       <h2>blogs</h2>
       <p>Logged in as {user.name}</p>
       <button onClick={handleLogout}>Logout</button>
       <br />
       <br />
-      <CreateBlogForm handleCreateBlog={handleCreateBlog} />
+      <CreateBlogForm 
+        title={title} 
+        setTitle={setTitle}
+        author={author}
+        setAuthor={setAuthor}
+        url={url}
+        setUrl={setUrl}
+        handleCreateBlog={handleCreateBlog} 
+      />
       <br />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />

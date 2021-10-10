@@ -10,11 +10,9 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
+  const toggleRef = useRef()
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -75,10 +73,8 @@ const App = () => {
     try {
       const newBlog = await blogService.createBlog(blogInfo)
       setBlogs(blogs.concat(newBlog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      blogFormRef.current.toggleVisibility()
+      blogFormRef.current.clearForm()
+      toggleRef.current.toggleVisibility()
       setMessage({
         text: `Added ${newBlog.title} by ${newBlog.author}`,
         type: 'success'
@@ -138,16 +134,8 @@ const App = () => {
       <button onClick={handleLogout}>Logout</button>
       <br />
       <br />
-      <Togglable buttonLabel='New Blog' ref={blogFormRef}>
-        <CreateBlogForm 
-          title={title} 
-          setTitle={setTitle}
-          author={author}
-          setAuthor={setAuthor}
-          url={url}
-          setUrl={setUrl}
-          handleCreateBlog={handleCreateBlog} 
-        />
+      <Togglable buttonLabel='New Blog' ref={toggleRef}>
+        <CreateBlogForm handleCreateBlog={handleCreateBlog} ref={blogFormRef} />
       </Togglable>
       <br />
       {blogs.map(blog =>

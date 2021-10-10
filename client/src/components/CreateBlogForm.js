@@ -1,7 +1,22 @@
 // eslint-disable-next-line no-unused-vars
-import react, { useState } from 'react'
+import react, { useState, useImperativeHandle } from 'react'
 
-const CreateBlogForm = ({ title, setTitle, author, setAuthor, url, setUrl, handleCreateBlog }) => {
+const CreateBlogForm = react.forwardRef(({ handleCreateBlog }, ref) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
+  const clearForm = () => {
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
+
+  useImperativeHandle(ref, () => {
+    return {
+      clearForm
+    }
+  })
 
   return(
     <form onSubmit={handleCreateBlog}>
@@ -35,6 +50,6 @@ const CreateBlogForm = ({ title, setTitle, author, setAuthor, url, setUrl, handl
       <button type='submit'>Add Blog</button>
     </form>
   )
-}
+})
 
 export default CreateBlogForm

@@ -14,6 +14,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const toggleRef = useRef()
   const blogFormRef = useRef()
+  const blogRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -73,7 +74,7 @@ const App = () => {
     }
     try {
       const newBlog = await blogService.createBlog(blogInfo)
-      setBlogs(blogs.concat(newBlog))
+      setBlogs(blogs.concat(newBlog).sort((a,b) => (a.likes < b.likes ? 1 : -1)))
       blogFormRef.current.clearForm()
       toggleRef.current.toggleVisibility()
       setMessage({
@@ -92,6 +93,34 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 4000)
+    }
+  }
+
+  const handleDeleteBlog = async (event) => {
+    event.preventDefault()
+    const blog = blogRef.current.blog
+    const confirmed = window.confirm(`Permanently delete blog ${blog.title}?`)
+    if(confirmed) {
+      try {
+        await blogService.deleteBlog(blog)
+        setBlogs(blogs.filter(b => b.id !== blog.id).sort((a,b) => (a.likes < b.likes ? 1 : -1)))
+        setMessage({
+          text: `Deleted ${blog.title}`,
+          type: 'success'
+        })
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
+      } catch (exception) {
+        console.log(exception);
+        setMessage({
+          text: `${exception}`,
+          type: 'error'
+        })
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
+      }
     }
   }
 
@@ -140,7 +169,7 @@ const App = () => {
       </Togglable>
       <br />
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleDeleteBlog={handleDeleteBlog} ref={blogRef} />
       )}
     </div>
   )

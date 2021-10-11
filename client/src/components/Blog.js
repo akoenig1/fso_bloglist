@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useImperativeHandle } from 'react'
 import blogService from '../services/blogs' 
 
-const Blog = ({blog}) => {
+const Blog = React.forwardRef(({blog, handleDeleteBlog}, ref) => {
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   
@@ -16,6 +16,15 @@ const Blog = ({blog}) => {
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const creator = blog.user ? blog.user.name : null
+
+  const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
+  const user = JSON.parse(loggedInUserJSON)
+
+  useImperativeHandle(ref, () => {
+    return {
+      blog
+    }
+  })
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -46,9 +55,11 @@ const Blog = ({blog}) => {
         Likes {blog.likes} <button onClick={handleLikeBlog}>Like</button>
         <br />
         {creator}
+        <br />
+        {creator === user.name ? <button onClick={handleDeleteBlog}>Delete</button> : null}
       </div>
     </div>  
   )
-}
+})
 
 export default Blog

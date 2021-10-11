@@ -20,7 +20,7 @@ const App = () => {
     blogService.getAll().then(blogs => {
       blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1))
       setBlogs( blogs )
-    })  
+    })
   }, [])
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password
@@ -85,7 +85,7 @@ const App = () => {
         setMessage(null)
       }, 4000)
     } catch (exception) {
-      console.log(exception);
+      console.log(exception)
       setMessage({
         text: `${exception}`,
         type: 'error'
@@ -112,7 +112,7 @@ const App = () => {
           setMessage(null)
         }, 4000)
       } catch (exception) {
-        console.log(exception);
+        console.log(exception)
         setMessage({
           text: `${exception}`,
           type: 'error'

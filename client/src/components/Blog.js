@@ -1,11 +1,11 @@
 import React, { useState, useImperativeHandle } from 'react'
-import blogService from '../services/blogs' 
+import blogService from '../services/blogs'
 import propTypes from 'prop-types'
 
-const Blog = React.forwardRef(({blog, handleDeleteBlog}, ref) => {
+const Blog = React.forwardRef(({ blog, handleDeleteBlog }, ref) => {
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
-  
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -39,10 +39,10 @@ const Blog = React.forwardRef(({blog, handleDeleteBlog}, ref) => {
       await blogService.updateBlog(blog)
       setLikes(likes + 1)
     } catch (exception) {
-      console.log(exception);
+      console.log(exception)
     }
   }
-  
+
   return (
     <div style={blogStyle}>
       <div style={hideWhenVisible}>
@@ -59,9 +59,11 @@ const Blog = React.forwardRef(({blog, handleDeleteBlog}, ref) => {
         <br />
         {creator === user.name ? <button onClick={handleDeleteBlog}>Delete</button> : null}
       </div>
-    </div>  
+    </div>
   )
 })
+
+Blog.displayName = 'Blog'
 
 Blog.propTypes = {
   blog: propTypes.object.isRequired,

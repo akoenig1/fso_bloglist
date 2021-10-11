@@ -1,7 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import react, { useState, useImperativeHandle } from 'react'
+import propTypes from 'prop-types'
 
-const CreateBlogForm = react.forwardRef(({ handleCreateBlog }, ref) => {
+const CreateBlogForm = react.forwardRef(({ handleCreateBlog }, ref) => {  
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -51,5 +52,9 @@ const CreateBlogForm = react.forwardRef(({ handleCreateBlog }, ref) => {
     </form>
   )
 })
+
+CreateBlogForm.propTypes = {
+  handleCreateBlog: propTypes.func.isRequired
+}
 
 export default CreateBlogForm

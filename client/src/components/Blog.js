@@ -1,5 +1,6 @@
 import React, { useState, useImperativeHandle } from 'react'
 import blogService from '../services/blogs' 
+import propTypes from 'prop-types'
 
 const Blog = React.forwardRef(({blog, handleDeleteBlog}, ref) => {
   const [visible, setVisible] = useState(false)
@@ -61,5 +62,10 @@ const Blog = React.forwardRef(({blog, handleDeleteBlog}, ref) => {
     </div>  
   )
 })
+
+Blog.propTypes = {
+  blog: propTypes.object.isRequired,
+  handleDeleteBlog: propTypes.func.isRequired
+}
 
 export default Blog

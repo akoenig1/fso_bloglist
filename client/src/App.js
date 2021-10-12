@@ -96,6 +96,21 @@ const App = () => {
     }
   }
 
+  const handleLikeBlog = async (event) => {
+    event.preventDefault()
+    const blog = blogRef.current.blog
+    const likes = blogRef.current.likes
+    const setLikes = blogRef.current.setLikes
+    blog.likes += 1
+
+    try {
+      await blogService.updateBlog(blog)
+      setLikes(likes + 1)
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+
   const handleDeleteBlog = async (event) => {
     event.preventDefault()
     const blog = blogRef.current.blog
@@ -169,7 +184,7 @@ const App = () => {
       </Togglable>
       <br />
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleDeleteBlog={handleDeleteBlog} ref={blogRef} />
+        <Blog key={blog.id} blog={blog} handleLikeBlog={handleLikeBlog} handleDeleteBlog={handleDeleteBlog} ref={blogRef} />
       )}
     </div>
   )

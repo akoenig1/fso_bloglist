@@ -1,8 +1,7 @@
 import React, { useState, useImperativeHandle } from 'react'
-import blogService from '../services/blogs'
 import propTypes from 'prop-types'
 
-const Blog = React.forwardRef(({ blog, handleDeleteBlog }, ref) => {
+const Blog = React.forwardRef(({ blog, handleLikeBlog, handleDeleteBlog }, ref) => {
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
@@ -23,24 +22,12 @@ const Blog = React.forwardRef(({ blog, handleDeleteBlog }, ref) => {
 
   useImperativeHandle(ref, () => {
     return {
-      blog
+      blog, likes, setLikes
     }
   })
 
   const toggleVisibility = () => {
     setVisible(!visible)
-  }
-
-  const handleLikeBlog = async (event) => {
-    event.preventDefault()
-    blog.likes += 1
-
-    try {
-      await blogService.updateBlog(blog)
-      setLikes(likes + 1)
-    } catch (exception) {
-      console.log(exception)
-    }
   }
 
   return (

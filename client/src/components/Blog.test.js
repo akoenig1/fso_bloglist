@@ -39,3 +39,24 @@ test('clicking the view button displays extended view', () => {
   expect(component.container.querySelector('hidden-view')).toBeNull()
   expect(component.container.querySelector('expanded-view')).toBeDefined()
 })
+
+test('clicking the like button twice fires the like event handler twice', () => {
+  const blog = {
+    title: 'Cooking Sous Viv',
+    author: 'Vivian Cao',
+    url: 'cookingsousviv.com',
+    likes: 0,
+    user: null
+  }
+  const mockHandler = jest.fn()
+
+  const component = render(
+    <Blog blog={blog} handleLikeBlog={mockHandler} handleDeleteBlog={() => null} />
+  )
+
+  const button = component.getByText('Like')
+  fireEvent.click(button)
+  fireEvent.click(button)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
+})

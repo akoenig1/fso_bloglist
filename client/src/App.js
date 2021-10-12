@@ -13,7 +13,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const toggleRef = useRef()
-  const blogFormRef = useRef()
   const blogRef = useRef()
 
   useEffect(() => {
@@ -65,17 +64,10 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreateBlog = async (event) => {
-    event.preventDefault()
-    const blogInfo = {
-      title: event.target.title.value,
-      author: event.target.author.value,
-      url: event.target.url.value
-    }
+  const handleCreateBlog = async (blogInfo) => {
     try {
       const newBlog = await blogService.createBlog(blogInfo)
       setBlogs(blogs.concat(newBlog).sort((a,b) => (a.likes < b.likes ? 1 : -1)))
-      blogFormRef.current.clearForm()
       toggleRef.current.toggleVisibility()
       setMessage({
         text: `Added ${newBlog.title} by ${newBlog.author}`,
@@ -180,7 +172,7 @@ const App = () => {
       <br />
       <br />
       <Togglable buttonLabel='New Blog' ref={toggleRef}>
-        <CreateBlogForm handleCreateBlog={handleCreateBlog} ref={blogFormRef} />
+        <CreateBlogForm handleCreateBlog={handleCreateBlog} />
       </Togglable>
       <br />
       {blogs.map(blog =>

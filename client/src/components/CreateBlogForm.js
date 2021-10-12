@@ -1,29 +1,36 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useImperativeHandle } from 'react'
+import React, { useState } from 'react'
 import propTypes from 'prop-types'
 
-const CreateBlogForm = React.forwardRef(({ handleCreateBlog }, ref) => {
+const CreateBlogForm = ({ handleCreateBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const clearForm = () => {
+  const addBlog = (event) => {
+    event.preventDefault()
+    handleCreateBlog({
+      title: title,
+      author: author,
+      url: url
+    })
     setTitle('')
     setAuthor('')
     setUrl('')
   }
 
-  useImperativeHandle(ref, () => {
-    return {
-      clearForm
-    }
-  })
+  // useImperativeHandle(ref, () => {
+  //   return {
+  //     clearForm
+  //   }
+  // })
 
   return(
-    <form onSubmit={handleCreateBlog}>
+    <form className='create-blog-form' onSubmit={addBlog}>
       <div>
         Title:
         <input
+          id='title'
           type='text'
           value={title}
           name='title'
@@ -33,6 +40,7 @@ const CreateBlogForm = React.forwardRef(({ handleCreateBlog }, ref) => {
       <div>
         Author:
         <input
+          id='author'
           type='text'
           value={author}
           name='author'
@@ -42,6 +50,7 @@ const CreateBlogForm = React.forwardRef(({ handleCreateBlog }, ref) => {
       <div>
         URL:
         <input
+          id='url'
           type='text'
           value={url}
           name='url'
@@ -51,7 +60,7 @@ const CreateBlogForm = React.forwardRef(({ handleCreateBlog }, ref) => {
       <button type='submit'>Add Blog</button>
     </form>
   )
-})
+}
 
 CreateBlogForm.displayName = 'Create Blog Form'
 

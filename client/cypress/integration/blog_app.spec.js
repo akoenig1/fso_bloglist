@@ -34,4 +34,22 @@ describe('Blog App', function() {
       cy.contains('Invalid credentials')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('bobama44')
+      cy.get('#password').type('barry0')
+      cy.get('#login-button').click()
+    })
+
+    it('a blog can be created', function() {
+      cy.contains('New Blog').click()
+      cy.contains('Add Blog')
+      cy.get('#title').type('Cooking Sous Viv')
+      cy.get('#author').type('Vivian Cao')
+      cy.get('#url').type('www.cookingsousviv.com')
+      cy.get('#create-blog-button').click()
+      cy.contains('Added Cooking Sous Viv by Vivian Cao')
+    })
+  })
 })

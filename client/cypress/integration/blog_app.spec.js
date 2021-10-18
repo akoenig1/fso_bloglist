@@ -40,6 +40,12 @@ describe('Blog App', function() {
       cy.get('#username').type('bobama44')
       cy.get('#password').type('barry0')
       cy.get('#login-button').click()
+
+      cy.contains('New Blog').click()
+      cy.get('#title').type('Bon Appetit')
+      cy.get('#author').type('Brad Leone')
+      cy.get('#url').type('www.bonappetit.com')
+      cy.get('#create-blog-button').click()
     })
 
     it('a blog can be created', function() {
@@ -50,6 +56,13 @@ describe('Blog App', function() {
       cy.get('#url').type('www.cookingsousviv.com')
       cy.get('#create-blog-button').click()
       cy.contains('Added Cooking Sous Viv by Vivian Cao')
+      cy.contains('View')
+    })
+
+    it('a blog can be liked', function() {
+      cy.contains('View').click()
+      cy.contains('Like').click()
+      cy.contains('Likes 1')
     })
   })
 })
